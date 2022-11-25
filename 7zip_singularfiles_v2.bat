@@ -7,7 +7,7 @@ echo THIS SCRIPT NEEDS 7zip&pause&exit
 
 :next
 rem //all files, no folders, minus batch script
-dir /b /a:-d | findstr /lv /c:"%~nx0" >temp.txt
+dir /b /a:-d | (findstr /lv /c:"%~nx0") >temp.txt
 
 set /a "_total_lines=0"&set /a "_count_lines=0"
 for /f "delims=" %%g in (temp.txt) do set /a _total_lines+=1
