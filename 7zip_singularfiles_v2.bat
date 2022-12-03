@@ -7,10 +7,10 @@ echo THIS SCRIPT NEEDS 7zip&pause&exit
 
 :next
 rem //all files, no folders, minus batch script
-dir /b /a:-d | (findstr /lv /c:"%~nx0") >temp.txt
+REM dir /b /a:-d|(findstr /lv /c:"%~nx0")>temp.txt
 
-set /a "_total_lines=0"&set /a "_count_lines=0"
-for /f "delims=" %%g in (temp.txt) do set /a _total_lines+=1
+set /a "_total_lines=-1"&set /a "_count_lines=0"
+for /f "delims=" %%g in ('dir /b /a:-d') do set /a _total_lines+=1
 
 if %_total_lines% equ 0 (
 	title ERROR
@@ -18,7 +18,7 @@ if %_total_lines% equ 0 (
 )
 
 if exist error.log del error.log
-for /f "delims=" %%g in (temp.txt) do (
+for /f "delims=" %%g in ('dir /b /a:-d^|findstr /lv /c:"%~nx0"') do (
 	if exist "%%g" (
 		"%_7zip%" a -spd -- "%%~ng.zip" "%%g"
 		del "%%g"
@@ -29,7 +29,7 @@ for /f "delims=" %%g in (temp.txt) do (
 	cls
 )
 
-del temp.txt
+REM del temp.txt
 title FINISHED
 echo TOTAL FILES PROCESSED: %_count_lines%
 if exist error.log (
